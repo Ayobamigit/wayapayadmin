@@ -1,0 +1,169 @@
+.Sidebar{
+    background-color:var(--primaryColor);
+    font-family: var(--primaryFont);
+    width: 300px;
+    height: 100vh;
+    overflow:auto;
+    border-right: 2px solid #FAFAFA;
+}
+
+@media (max-width : 1000px){
+    .Sidebar{
+        visibility: hidden;
+        // display: none;
+    }
+}
+
+.logo{
+    background: #1a1a27;
+    padding-top: 10px;
+    padding-left: 25px;
+    padding-bottom: 18px;
+    // height: 45px;
+    
+}
+
+.side-padding{
+    padding: 10px 30px;
+}
+
+.logosize{
+    height: 35px;
+    width: 100px;
+}
+.NavigationBox{
+    padding-top: 30px;
+    padding-bottom: 10px;
+}
+
+.Navigation-active{
+    list-style: none;
+    padding-left: 19px !important;
+    margin-top: -14px;
+    display: block;
+    background-color: #FF66341A;
+    // color: #fff !important;
+}
+
+.Navigation-active a{
+    font-family: var(--primaryFont);
+    font-size: 14px;
+    color: var(--thirdColor);
+    text-decoration: none;
+    line-height: 45px;
+    padding-left: 15px;
+    font-weight: 400;
+    margin-left: 12px;
+
+}
+
+.Navigation-active :hover{
+    cursor: pointer;
+
+    a{
+        color: var(--thirdColor);
+        text-decoration: none;
+    }
+
+}
+
+
+.Navigation{
+    list-style: none;
+    padding-left: 19px !important;
+    margin-top: -14px;
+    display: block;
+    
+    
+}
+
+
+.Navigation a{
+    font-family: var(--primaryFont);
+    font-size: 14px;
+    color: #000;
+    text-decoration: none;
+    line-height: 45px;
+    padding-left: 15px;
+    font-weight: 400;
+    margin-left: 12px;
+    
+
+}
+
+.Navigation :hover{
+
+    cursor: pointer;
+    
+
+    a{
+        font-family: var(--primaryFont);
+        font-size: 14px;
+        color: var(--thirdColor);
+        text-decoration: none;
+        line-height: 45px;
+        padding-left: 15px;
+        font-weight: 400;
+    }
+    
+
+    .sideIcon{
+        // margin-left: 6px;
+        fill:  #FF4B01;
+    }
+
+    .submenu a{
+        font-size: 12px;
+        color: #000
+    }
+
+    .submenu a:hover{
+        color: var(--thirdColor)
+    }
+
+    
+}
+
+
+.sideIcon{
+    fill: #FFCFBB;
+    margin-left: 6px;
+}
+
+
+.activeIcon{
+    fill: #FF4B01;
+    margin-left: 6px;
+}
+
+.submenu{
+    margin-left: -10px;
+    margin-top: -10px;
+    // line-height: -190px;
+}
+
+.submenu a{
+    margin-left: 20px;
+    font-size: 12px;
+}
+
+
+::-webkit-scrollbar-track {
+	// border: 1px solid #FAA831;
+	background-color: transparent;	
+}
+
+::-webkit-scrollbar {
+	width: 1px;
+    height: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--thirdColor);
+    border-radius: 75px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--thirdColor);
+}
+

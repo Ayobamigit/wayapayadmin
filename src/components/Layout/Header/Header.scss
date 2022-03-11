@@ -1,0 +1,62 @@
+.Header{
+    background: var(--primaryColor);
+    height: 67px;
+    font-family: var(--primaryFont);
+    padding: 25px 35px 5px 24px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1)
+}
+
+.Title{
+    padding: 15px;
+    width: auto;
+}
+
+.Pagetitle{
+    font-size: 18px;
+    font-weight: 700;
+    color:#252733
+}
+
+.user{
+    display: flex;
+    margin-left: 50%;
+}
+
+.name{
+    color: #C3C3C3;
+    font-weight: 500;
+
+}
+
+.greet{
+    color: #B5B5C3 ;
+    font-size: 13px;
+}
+
+.userIcon{
+    margin-left: 12px;
+    margin-top: -7px;
+    background-color: transparent;
+    width: 35px;
+    height: 35px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    border-radius: 0.42rem;
+    border: 1px solid #C3C3C3;
+}
+
+.initials{
+    font-weight: 600;
+    color: #C3C3C3;
+    font-size: 16.25px;
+    text-align: center;
+    margin-top: 7px;
+
+}
+
+@media (min-width: 1000px) {
+    .hide {
+        display: none;
+    }
+}
