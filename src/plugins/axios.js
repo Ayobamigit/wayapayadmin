@@ -4,6 +4,7 @@ let authToken= null
 if (typeof window !== "undefined") {
     if(localStorage.getItem('userDetails'))
     {
+        console.log('here')
         const {token}= JSON.parse(localStorage.getItem('userDetails'));
         authToken = token;
     }
@@ -11,7 +12,7 @@ if (typeof window !== "undefined") {
 const instance = axios;
 
 if (authToken){
-    instance.defaults.headers.common['Authorization'] = `serial ${authToken}`
+    instance.defaults.headers.common['Authorization'] = `${authToken}`
 }
 instance.defaults.headers.common['Content-Type'] = 'application/json';
 

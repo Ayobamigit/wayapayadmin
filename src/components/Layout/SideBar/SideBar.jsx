@@ -16,10 +16,16 @@ import { ReactComponent as SideWayaGram } from "../../../assets/icons/side_wayag
 import { ReactComponent as SideWayaWeb } from "../../../assets/icons/side_web.svg";
 import {NavLink} from 'react-router-dom';
 import Divider from '../../Divider/Divider';
-
+import {useNavigate } from 'react-router'
 
 
 const SideBar = (props) => {
+    const navigate = useNavigate()
+
+    const logout = () => {
+        localStorage.clear();
+        navigate('/')
+    }
   return (
     <div className="Sidebar">
         <div className="side-padding">
@@ -74,7 +80,7 @@ const SideBar = (props) => {
             </ul>
             <ul className={props.title === 'Manage POS' ? 'Navigation-active' : 'Navigation'}>
                 <li>
-                    <Pos className={props.title === 'Manage POS' ? 'activeIcon' : 'sideIcon'} size={20} /><NavLink to ="/">Manage POS</NavLink>
+                    <Pos className={props.title === 'Manage POS' ? 'activeIcon' : 'sideIcon'} size={20} /><NavLink to ="/manage-pos">Manage POS</NavLink>
                 </li>
             </ul>
             <ul className={props.title === 'Logs' ? 'Navigation-active' : 'Navigation'}>
@@ -84,7 +90,7 @@ const SideBar = (props) => {
                     <ul className="collapse list-unstyled nav-link" id="logSubmenu">
 
                             <li className="submenu">
-                                <NavLink to="/" activeClassName="selected">
+                                <NavLink to="/disputes" activeClassName="selected">
                                     Dispute
                                 </NavLink>
                             </li>
@@ -95,7 +101,7 @@ const SideBar = (props) => {
                                 </NavLink>
                             </li>
                             <li className="submenu">
-                                <NavLink to="/" activeClassName="selected">
+                                <NavLink to="/admin-logs" activeClassName="selected">
                                     Admin Logs
                                 </NavLink>
                             </li>
@@ -109,6 +115,7 @@ const SideBar = (props) => {
                                     Third Party Disputes
                                 </NavLink>
                             </li>
+                            
 
                     </ul>
                 </li>
@@ -118,9 +125,9 @@ const SideBar = (props) => {
                     <Otp className={props.title === 'OTP' ? 'activeIcon' : 'sideIcon'} size={20} /><NavLink to ="/">OTP</NavLink>
                 </li>
             </ul>
-            <ul className={props.title === 'Tech' ? 'Navigation-active' : 'Navigation'}>
+            <ul className={props.title === 'Transaction Routing' || props.title === 'Pricings' || props.title === 'Stations' || props.title === 'Scheme' ? 'Navigation-active' : 'Navigation'}>
                 <li className="dropdown" href="#techSubmenu" data-toggle="collapse">
-                    <Tech className={props.title === 'Tech' ? 'activeIcon' : 'sideIcon'} size={20} /><NavLink to ="#">Tech</NavLink>
+                    <Tech className={props.title === 'Transaction Routing' || props.title === 'Pricings' || props.title === 'Stations' ? 'activeIcon' : 'sideIcon'} size={20} /><NavLink to ="#">Tech</NavLink>
 
                     <ul className="collapse list-unstyled nav-link" id="techSubmenu">
 
@@ -131,7 +138,7 @@ const SideBar = (props) => {
                             </li>
 
                             <li className="submenu">
-                                <NavLink to="/" activeClassName="selected">
+                                <NavLink to="/pricing" activeClassName="selected">
                                     Pricings
                                 </NavLink>
                             </li>
@@ -143,6 +150,21 @@ const SideBar = (props) => {
                             <li className="submenu">
                                 <NavLink to="/" activeClassName="selected">
                                     Third Party Access
+                                </NavLink>
+                            </li>
+                            <li className="submenu">
+                                <NavLink to="/routing" activeClassName="selected">
+                                    Routing
+                                </NavLink>
+                            </li>
+                            <li className="submenu">
+                                <NavLink to="/stations" activeClassName="selected">
+                                    Stations
+                                </NavLink>
+                            </li>
+                            <li className="submenu">
+                                <NavLink to="/scheme" activeClassName="selected">
+                                    Scheme
                                 </NavLink>
                             </li>
 
@@ -177,7 +199,7 @@ const SideBar = (props) => {
             </ul>
 
             <ul className='Navigation'>
-                <li>
+                <li onClick = {logout}>
                     <Logout className='sideIcon' size={20} /><NavLink to ="/">Log Out</NavLink>
                 </li>
             </ul>

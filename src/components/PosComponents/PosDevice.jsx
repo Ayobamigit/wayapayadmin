@@ -1,4 +1,4 @@
-import React, {createContext, useState} from 'react'
+import React, {createContext, useState, useEffect} from 'react'
 import { Row, Col, Table, Container } from 'react-bootstrap'
 import {FiSearch} from 'react-icons/fi'
 import {IoFilterOutline} from 'react-icons/io5'
@@ -15,17 +15,25 @@ import {MdDelete} from 'react-icons/md'
 import Modal from '../Modal/Modal'
 import AddDevice from './AddDevice'
 import axios from '../../plugins/axios'
-import { createterminal } from '../../plugins/urls'
+import { createterminal, viewAllTerminals } from '../../plugins/urls'
 import { toast, Slide } from "react-toastify";
+import NoResultFound from '../NoResultFound/NoResultFound'
+import moment from 'moment'
 
 
 export const PosDeviceContext = createContext();
 
 const PosDevice = () => {
+    const {user} = JSON.parse(localStorage.getItem('userDetails'));
   const navigate = useNavigate()
 
   const [state, setState] = useState({
       add: false,
+      from:'',
+      to:'',
+      pageNo:0,
+      pageSize: 20,
+      terminalList: [],
       actualTerminalName:'',
       description:'',
       numberOfPaymentTime:'',
@@ -37,7 +45,7 @@ const PosDevice = () => {
       submit: false
   })
 
-  const {add, actualTerminalName, description, numberOfPaymentTime, preferredTerminalName, terminalCost, terminalId, terminalSerialNumber, terminalType, submit} = state;
+  const {terminalList, add, actualTerminalName, description, numberOfPaymentTime, preferredTerminalName, terminalCost, terminalId, terminalSerialNumber, terminalType, from, to, pageNo, pageSize, submit} = state;
 
   const showModal = () =>{
     if(!add){
@@ -52,6 +60,44 @@ const PosDevice = () => {
         }))
     } 
   
+}
+
+useEffect(()=>{
+    getTerminals()
+},[])
+
+const getTerminals = ()=>{
+    let reqBody = {
+        from,
+        to,
+        pageNo,
+        pageSize,
+        paramList:[
+            {
+             userid: user? user.id : ''
+            }
+        ]
+    }
+
+    axios({
+        method: 'post',
+        url: `${viewAllTerminals}`,
+        data: reqBody
+    }).then(res=>{
+        if(res.data.respCode === 0){
+            setState(state=>({
+                ...state,
+                terminalList: res.data.respBody.content
+            }))
+        }
+    })
+    .catch(err=>{
+    toast.error(`${err.response.data.message}`, {
+        transition: Slide,
+        hideProgressBar: true,
+        autoClose: 3000,
+      });
+})
 }
 
 const onChange =(e)=>{
@@ -232,83 +278,131 @@ const onCreateTerminal = (e) =>{
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td>123232328</td>
-                            <td>Nexgo</td>
-                            <td>NGN 50,000</td>
-                            <td>Business name 1</td>
-                            <td><span className="tabactive">Active</span></td>
-                            <td>Tue. 9th Sept 2021 07:04 AM (WAT)</td>
-                            <td>
-                                <span className="actionBlue"><AiFillEye size={20} color="#064A72" /></span>
-                                <span className="action-lightBlue ml-10"><Setting size={20} color="#064A72" /> Edit</span>
-                                <span className="actionDanger ml-10"><Cancel size={20} color="#FF4400"/> Deactivate</span>
-                                <MdDelete  className="ml-10" size={20} color="#FF4400" />
-                            </td>
-                        </tr>
+                    {
+                        terminalList?
+                        terminalList.length === 0 ?
+                            <NoResultFound />
+                            :
+                            terminalList.map((terminal, i)=>{
+                                const{terminalId, terminalName, assignedTo, terminalAmount, status, issuedDate} = terminal;
+                                const statusClass = () =>{
+                                    if(status){
+                                        if(status.toLowerCase() === 'activated'){
+                                            return 'tabactive'
+                                        }
+                                        // else if(status.toLowerCase() === 'refunded'){
+                                        //     return 'tabpending'
+                                        // } 
+                                        // else if(status.toLowerCase() === 'abandoned'){
+                                        //     return 'tabdamaged'
+                                        // }
+                                        else{
+                                            return 'tabdamaged'
+                                        }
+                                    }
+                                }
 
-                        <tr>
-                            <td>123232328</td>
-                            <td>Nexgo</td>
-                            <td>NGN 50,000</td>
-                            <td>Business name 1</td>
-                            <td><span className="tabactive">Active</span></td>
-                            <td>Tue. 9th Sept 2021 07:04 AM (WAT)</td>
-                            <td>
-                                <span className="actionBlue"><AiFillEye size={20} color="#064A72" /></span>
-                                <span className="action-lightBlue ml-10"><Setting size={20} color="#064A72" /> Edit</span>
-                                <span className="actionSuccess ml-10"><Check size={20} color="#FF4400"/> Activate</span>
-                                <MdDelete  className="ml-10" size={20} color="#FF4400" />
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>123232328</td>
-                            <td>Nexgo</td>
-                            <td>NGN 50,000</td>
-                            <td>Business name 1</td>
-                            <td><span className="tabdamaged">INACTIVE (DAMAGED)</span></td>
-                            <td>Tue. 9th Sept 2021 07:04 AM (WAT)</td>
-                            <td>
-                                <span className="actionBlue"><AiFillEye size={20} color="#064A72" /></span>
-                                <span className="action-lightBlue ml-10"><Setting size={20} color="#064A72" /> Edit</span>
-                                <span className="actionDanger ml-10"><Cancel size={20} color="#FF4400"/> Deactivate</span>
-                                <MdDelete  className="ml-10" size={20} color="#FF4400" />
-                            </td>
-
-                        </tr>
-
-                        <tr>
-                            <td>123232328</td>
-                            <td>Nexgo</td>
-                            <td>NGN 50,000</td>
-                            <td>Business name 1</td>
-                            <td><span className="tabactive">Active</span></td>
-                            <td>Tue. 9th Sept 2021 07:04 AM (WAT)</td>
-                            <td>
-                                <span className="actionBlue"><AiFillEye size={20} color="#064A72" /></span>
-                                <span className="action-lightBlue ml-10"><Setting size={20} color="#064A72" /> Edit</span>
-                                <span className="actionSuccess ml-10"><Check size={20} color="#FF4400"/> Activate</span>
-                                <MdDelete  className="ml-10" size={20} color="#FF4400" />
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>123232328</td>
-                            <td>Nexgo</td>
-                            <td>NGN 50,000</td>
-                            <td>Business name 1</td>
-                            <td><span className="tabdamaged">INACTIVE (DAMAGED)</span></td>
-                            <td>Tue. 9th Sept 2021 07:04 AM (WAT)</td>
-                            <td>
-                                <span className="actionBlue"><AiFillEye size={20} color="#064A72" /></span>
-                                <span className="action-lightBlue ml-10"><Setting size={20} color="#064A72" /> Edit</span>
-                                <span className="actionDanger ml-10"><Cancel size={20} color="#FF4400"/> Deactivate</span>
-                                <MdDelete  className="ml-10" size={20} color="#FF4400" />
-                            </td>
-
-                        </tr>
+                                return(
+                                    <tr key={i}>
+                                    <td>{terminalId}</td>
+                                    <td>{terminalName}</td>
+                                    <td>{terminalAmount}</td>
+                                    <td>{assignedTo}</td>
+                                    <td><span className={`${statusClass()}`}>{status}</span></td>
+                                    <td>{issuedDate ? moment(new Date(issuedDate)).format('D/MM/YYYY') : 'N/A'}</td>
+                                    <td>
+                                        <span className="actionBlue"><AiFillEye size={20} color="#064A72" /></span>
+                                        <span className="action-lightBlue ml-10"><Setting size={20} color="#064A72" /> Edit</span>
+                                        <span className="actionDanger ml-10"><Cancel size={20} color="#FF4400"/> Deactivate</span>
+                                        <MdDelete  className="ml-10" size={20} color="#FF4400" />
+                                    </td>
+                                </tr>
+                                )
+                            })
+                        :
+                        <NoResultFound />
+                    }
+                        
                     </tbody>
+
+                    {/* <tbody>
+                        <tr>
+                            <td>123232328</td>
+                            <td>Nexgo</td>
+                            <td>NGN 50,000</td>
+                            <td>Business name 1</td>
+                            <td><span className="tabactive">Active</span></td>
+                            <td>Tue. 9th Sept 2021 07:04 AM (WAT)</td>
+                            <td>
+                                <span className="actionBlue"><AiFillEye size={20} color="#064A72" /></span>
+                                <span className="action-lightBlue ml-10"><Setting size={20} color="#064A72" /> Edit</span>
+                                <span className="actionDanger ml-10"><Cancel size={20} color="#FF4400"/> Deactivate</span>
+                                <MdDelete  className="ml-10" size={20} color="#FF4400" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>123232328</td>
+                            <td>Nexgo</td>
+                            <td>NGN 50,000</td>
+                            <td>Business name 1</td>
+                            <td><span className="tabactive">Active</span></td>
+                            <td>Tue. 9th Sept 2021 07:04 AM (WAT)</td>
+                            <td>
+                                <span className="actionBlue"><AiFillEye size={20} color="#064A72" /></span>
+                                <span className="action-lightBlue ml-10"><Setting size={20} color="#064A72" /> Edit</span>
+                                <span className="actionSuccess ml-10"><Check size={20} color="#FF4400"/> Activate</span>
+                                <MdDelete  className="ml-10" size={20} color="#FF4400" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>123232328</td>
+                            <td>Nexgo</td>
+                            <td>NGN 50,000</td>
+                            <td>Business name 1</td>
+                            <td><span className="tabdamaged">INACTIVE (DAMAGED)</span></td>
+                            <td>Tue. 9th Sept 2021 07:04 AM (WAT)</td>
+                            <td>
+                                <span className="actionBlue"><AiFillEye size={20} color="#064A72" /></span>
+                                <span className="action-lightBlue ml-10"><Setting size={20} color="#064A72" /> Edit</span>
+                                <span className="actionDanger ml-10"><Cancel size={20} color="#FF4400"/> Deactivate</span>
+                                <MdDelete  className="ml-10" size={20} color="#FF4400" />
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td>123232328</td>
+                            <td>Nexgo</td>
+                            <td>NGN 50,000</td>
+                            <td>Business name 1</td>
+                            <td><span className="tabactive">Active</span></td>
+                            <td>Tue. 9th Sept 2021 07:04 AM (WAT)</td>
+                            <td>
+                                <span className="actionBlue"><AiFillEye size={20} color="#064A72" /></span>
+                                <span className="action-lightBlue ml-10"><Setting size={20} color="#064A72" /> Edit</span>
+                                <span className="actionSuccess ml-10"><Check size={20} color="#FF4400"/> Activate</span>
+                                <MdDelete  className="ml-10" size={20} color="#FF4400" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>123232328</td>
+                            <td>Nexgo</td>
+                            <td>NGN 50,000</td>
+                            <td>Business name 1</td>
+                            <td><span className="tabdamaged">INACTIVE (DAMAGED)</span></td>
+                            <td>Tue. 9th Sept 2021 07:04 AM (WAT)</td>
+                            <td>
+                                <span className="actionBlue"><AiFillEye size={20} color="#064A72" /></span>
+                                <span className="action-lightBlue ml-10"><Setting size={20} color="#064A72" /> Edit</span>
+                                <span className="actionDanger ml-10"><Cancel size={20} color="#FF4400"/> Deactivate</span>
+                                <MdDelete  className="ml-10" size={20} color="#FF4400" />
+                            </td>
+
+                        </tr>
+                    </tbody> */}
                 </Table>
             </div>
         </Container>

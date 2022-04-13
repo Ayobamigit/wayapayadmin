@@ -1,15 +1,71 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { Row, Col, Table, Container } from 'react-bootstrap'
 import {FiSearch} from 'react-icons/fi'
 import {IoFilterOutline} from 'react-icons/io5'
 import {BiLinkExternal} from 'react-icons/bi'
 import {ReactComponent as Pos} from '../../assets/icons/pos-white.svg' 
-import {ReactComponent as Plus} from '../../assets/icons/plus.svg' 
+import {ReactComponent as More} from '../../assets/icons/more.svg' 
 import {useNavigate } from 'react-router'
 import TerminalCards from '../Cards/TerminalCards'
+import { viewAllTerminalRequests } from '../../plugins/urls'
+import axios from '../../plugins/axios'
+import { toast, Slide } from "react-toastify";
+import NoResultFound from '../NoResultFound/NoResultFound'
+import moment from 'moment'
 
 const PosRequest = () => {
     const navigate = useNavigate()
+    const {user} = JSON.parse(localStorage.getItem('userDetails'));
+
+    const [state, setState] = useState({
+        from:'',
+        to:'',
+        pageNo:0,
+        pageSize: 20,
+        terminalList: []
+    })
+  
+    const {from, to, pageNo, pageSize, terminalList} = state;
+  
+  
+
+    useEffect(()=>{
+        getTerminals()
+    },[])
+    
+    const getTerminals = ()=>{
+        let reqBody = {
+            from,
+            to,
+            pageNo,
+            pageSize,
+            paramList:[
+                {
+                 userid: user? user.id : ''
+                }
+            ]
+        }
+    
+        axios({
+            method: 'post',
+            url: `${viewAllTerminalRequests}`,
+            data: reqBody
+        }).then(res=>{
+            if(res.data.respCode === 0){
+                setState(state=>({
+                    ...state,
+                    terminalList: res.data.respBody.content
+                }))
+            }
+        })
+        .catch(err=>{
+        toast.error(`${err.response.data.message}`, {
+            transition: Slide,
+            hideProgressBar: true,
+            autoClose: 3000,
+          });
+    })
+    }
     return (
       <>
           <div className="tableHeaders d-flex justify-content-start align-items-center">
@@ -78,10 +134,58 @@ const PosRequest = () => {
                               <th>terminal cost</th>
                               <th>amount paid</th>
                               <th>amount left</th>
+                              <th>status</th>
+                              <th>request date</th>
+                              <th>action</th>
+
                           </tr>
                       </thead>
-  
                       <tbody>
+                    {
+                        terminalList?
+                        terminalList.length === 0 ?
+                            <NoResultFound />
+                            :
+                            terminalList.map((terminal, i)=>{
+                                const{userID, requestedBy, subTotal, partPaymentAmount, status, dateCreated} = terminal;
+                                const statusClass = () =>{
+                                    if(status){
+                                        if(status.toLowerCase() === 'successful'){
+                                            return 'tabactive'
+                                        }
+                                        else if(status.toLowerCase() === 'refunded'){
+                                            return 'tabpending'
+                                        } 
+                                        else if(status.toLowerCase() === 'abandoned'){
+                                            return 'tabdamaged'
+                                        }
+                                        else{
+                                            return 'tabdanger'
+                                        }
+                                    }
+                                }
+
+                                return(
+                                    <tr key={i}>
+                                    <td>{userID}</td>
+                                    <td>{requestedBy}</td>
+                                    <td>BusnessName1</td>
+                                    <td>NEXGO</td>
+                                    <td>{subTotal}</td>
+                                    <td>{partPaymentAmount}</td>
+                                    <td>{partPaymentAmount}</td>
+                                    <td><span className={`${statusClass()}`}>{status}</span></td>
+                                    <td>{dateCreated ? moment(new Date(dateCreated)).format('D/MM/YYYY') : 'N/A'}</td>
+                                    <td><span><More /></span></td>
+                                </tr>
+                                )
+                            })
+                        :
+                        <NoResultFound />
+                    }
+                        
+                    </tbody>
+                      {/* <tbody>
                           <tr>
                               <td>44aa22f4-fc64-5b</td>
                               <td>reqestemail@example.com</td>
@@ -132,7 +236,7 @@ const PosRequest = () => {
                               <td>NGN 50,000.00</td>
                               <td>NGN 50,000.00</td>
                           </tr>
-                      </tbody>
+                      </tbody> */}
                   </Table>
               </div>
           </Container>
