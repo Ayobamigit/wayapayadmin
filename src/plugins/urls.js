@@ -23,6 +23,10 @@ export const signIn = `${baseUrl().auth}/auth/login`;
 //Sign up
 export const signUp = `${baseUrl().auth}/auth/create-corporate`;
 
+//Password reset
+export const sendOtp = `${baseUrl().auth}/password/forgot-password/byEmail`;
+export const resetPassword = `${baseUrl().auth}/password/forgot-password`;
+
 //Verify OTP
 export const verify = `${baseUrl().auth}/auth/verify-otp`;
 
@@ -44,9 +48,16 @@ export const requestTerminal = `${baseUrl().terminal}/terminals/request`;
 
 export const createterminal = `${baseUrl().terminal}/terminals/createterminal`;
 
+export const updateterminal = `${baseUrl().terminal}/terminals/updateterminal`;
+
+export const issueterminal = `${baseUrl().terminal}/terminals/issuerterminal`;
+
 export const viewAllTerminalRequests = `${baseUrl().terminal}/terminals/viewallrequestterminals`;
 
 export const viewAllTerminals = `${baseUrl().terminal}/terminals/viewallterminaladmin`;
+
+export const activateTerminal = `${baseUrl().terminal}/terminals/activateterminal`;
+
 
 //Transaction Services
 

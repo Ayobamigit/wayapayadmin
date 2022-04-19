@@ -122,7 +122,7 @@ const Login = () => {
 
                     <div className="text-center mt-20">
                         {/* <h4 className="fs-16 fw-400 text-default">Don't have an account? <span className="text-orange cursor-pointer" onClick={()=>navigate('/register')}> Sign up instead </span></h4> */}
-                        <h4 className="mt-20 fs-16 text-orange fw-400 cursor-pointer">Forgot your password?</h4>
+                        <h4 className="mt-20 fs-16 text-orange fw-400 cursor-pointer" onClick={()=>navigate('/forgot-password')}>Forgot your password?</h4>
                     </div>
                 </form>
             </div>

@@ -4,6 +4,7 @@ import {Route, Routes, Navigate} from 'react-router-dom';
 import Terminals from './pages/Terminals/Terminals';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Login from './pages/Auth/Login';
+import ForgotPassword from './pages/Auth/ForgotPassword';
 import Transactions from './pages/Transactions/Transactions';
 import Transaction from './pages/Transactions/Transaction';
 import Disputes from './pages/Disputes/Disputes';
@@ -29,6 +30,7 @@ function App() {
     {/* Login */}
 
     <Route path='/login' exact element={<Login />} />
+    <Route path='/forgot-password' exact element={<ForgotPassword />} />
 
     {/* Dashboard Management */}
 

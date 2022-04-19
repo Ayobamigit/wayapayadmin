@@ -15,10 +15,11 @@ import {MdDelete} from 'react-icons/md'
 import Modal from '../Modal/Modal'
 import AddDevice from './AddDevice'
 import axios from '../../plugins/axios'
-import { createterminal, viewAllTerminals } from '../../plugins/urls'
+import { activateTerminal, createterminal, updateterminal, viewAllTerminals } from '../../plugins/urls'
 import { toast, Slide } from "react-toastify";
 import NoResultFound from '../NoResultFound/NoResultFound'
 import moment from 'moment'
+import Swal from '../Swal/swal'
 
 
 export const PosDeviceContext = createContext();
@@ -29,6 +30,7 @@ const PosDevice = () => {
 
   const [state, setState] = useState({
       add: false,
+      modalValue:'',
       from:'',
       to:'',
       pageNo:0,
@@ -45,13 +47,23 @@ const PosDevice = () => {
       submit: false
   })
 
-  const {terminalList, add, actualTerminalName, description, numberOfPaymentTime, preferredTerminalName, terminalCost, terminalId, terminalSerialNumber, terminalType, from, to, pageNo, pageSize, submit} = state;
+  const {terminalList, add, modalValue, actualTerminalName, description, numberOfPaymentTime, preferredTerminalName, terminalCost, terminalId, terminalSerialNumber, terminalType, from, to, pageNo, pageSize, submit} = state;
 
-  const showModal = () =>{
+  const showModal = (value, terminal) =>{
     if(!add){
         setState(state=>({
             ...state,
             add: true,
+            modalValue: value,
+            actualTerminalName: terminal ? terminal.actualTerminalName ? terminal.actualTerminalName:'': '',
+            description: terminal ? terminal.description ? terminal.description: '': '', 
+            numberOfPaymentTime: terminal ? terminal.numberOfPaymentTime ? terminal.numberOfPaymentTime: '': '',
+            preferredTerminalName: terminal ? terminal.preferredTerminalName ? terminal.preferredTerminalName: '': '',
+            terminalCost: terminal ? terminal.terminalAmount ? terminal.terminalAmount: '' : '',
+            terminalId: terminal ? terminal.terminalId ? terminal.terminalId: '': '', 
+            terminalSerialNumber: terminal ? terminal.terminalSerialNumber ? terminal.terminalSerialNumber: '': '',
+            terminalType: terminal ? terminal.terminalType? terminal.terminalType : '' : '',
+            terminalId: terminal ? terminal.terminalId ? terminal.terminalId: '': '',
         }))
     }else{
         setState(state=>({
@@ -142,18 +154,19 @@ const onCreateTerminal = (e) =>{
         data: reqBody
     }).then(res=>{
         
-        if(res.data.status === true){
+        if(res.data.respCode === 0){
             setState(state=>({
                 ...state,
-                submit: true,
+                submit: false,
                 add: false
             }))
                 
-            toast.success(`${res.data.message}`, {
+            toast.success(`Terminal Created Successfully`, {
                 transition: Slide,
                 hideProgressBar: true,
                 autoClose: 3000,
               });
+              getTerminals()
         }else{
             toast.error(`${res.data.message}`, {
                 transition: Slide,
@@ -177,6 +190,152 @@ const onCreateTerminal = (e) =>{
     })
     
 }
+
+const onUpdateTerminal = (e) =>{
+    e.preventDefault();
+    setState(state=>({
+        ...state,
+        submit: true
+    }))
+
+    let reqBody ={
+        actualTerminalName,
+        description, 
+        numberOfPaymentTime,
+        preferredTerminalName,
+        terminalCost,
+        terminalId, 
+        terminalSerialNumber,
+        terminalType,
+    }
+
+    axios({
+        method: 'post',
+        url: `${updateterminal}`,
+        data: reqBody
+    }).then(res=>{
+        
+        if(res.data.respCode === 0){
+            setState(state=>({
+                ...state,
+                submit: false,
+                add: false
+            }))
+                
+            toast.success(`Terminal Updated Successfully`, {
+                transition: Slide,
+                hideProgressBar: true,
+                autoClose: 3000,
+              });
+              getTerminals()
+        }else{
+            toast.error(`${res.data.message}`, {
+                transition: Slide,
+                hideProgressBar: true,
+                autoClose: 3000,
+              });
+        }
+
+    }).catch(err=>{
+        setState(state=>({
+            ...state,
+            submit: false,
+            add: false
+        }))
+        console.log(err)
+        toast.error(`${err.response.data.message}`, {
+            transition: Slide,
+            hideProgressBar: true,
+            autoClose: 3000,
+          });
+    })
+    
+}
+
+const onActivateTerminal = (id, status)=>{
+    if(status){
+        if(status.toLowerCase()=== 'activated'){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Are you sure you want to deactivate this terminal!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes' 
+            })
+            .then(remove=>{
+                if(remove.isConfirmed){
+                    let reqBody={
+                        terminalId: id,
+                        status:'DEACTIVATED'
+                    }
+                    axios({
+                        method: 'post',
+                        url:`${activateTerminal}`,
+                        headers:{
+                            'Content-Type' : 'application/json'
+                        },
+                        data: reqBody
+                    }).then(res=>{
+                        if(res.data.respCode === 0){
+                            toast.success(
+                                `Terminal Deactivated successfully`,
+                                 { transition: Slide, hideProgressBar: true, autoClose: 3000 } 
+                            )
+                            getTerminals()
+                        }
+                    }).catch(err=>{
+                        toast.error(`${err.response.data.message}`, {
+                            transition: Slide,
+                            hideProgressBar: true,
+                            autoClose: 3000,
+                        });
+                    })
+                }
+            })
+        }
+        else if(status.toLowerCase()=== 'deactivated'){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Are you sure you want to Activate this terminal!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes' 
+            })
+            .then(remove=>{
+                if(remove.isConfirmed){
+                    let reqBody={
+                        terminalId: id,
+                        status:'ACTIVATED'
+                    }
+                    axios({
+                        method: 'post',
+                        url:`${activateTerminal}`,
+                        headers:{
+                            'Content-Type' : 'application/json'
+                        },
+                        data: reqBody
+                    }).then(res=>{
+                        if(res.data.respCode === 0){
+                            toast.success(
+                                `Terminal Activated successfully`,
+                                 { transition: Slide, hideProgressBar: true, autoClose: 3000 } 
+                            )
+                            getTerminals()
+                        }
+                    }).catch(err=>{
+                        toast.error(`${err.response.data.message}`, {
+                            transition: Slide,
+                            hideProgressBar: true,
+                            autoClose: 3000,
+                        });
+                    })
+                }
+            }) 
+        }
+    }
+    
+    
+}
   return (
     <PosDeviceContext.Provider value={{
         onChange,
@@ -185,10 +344,10 @@ const onCreateTerminal = (e) =>{
     <Modal 
         show={add} 
         clicked={showModal} 
-        submit={onCreateTerminal}
+        submit={modalValue === 'add' ? onCreateTerminal: onUpdateTerminal}
         loading={submit}
-        title="Add new terminal device" 
-        action="Add Terminal" 
+        title={modalValue === 'add' ? "Add new terminal device" : "Edit Terminal"} 
+        action={modalValue === 'add' ? "Add Terminal" : "Update Terminal"}
         close="Cancel"
     >
         <AddDevice />
@@ -230,7 +389,7 @@ const onCreateTerminal = (e) =>{
                         </div>
                     </div>
                     <div className="d-flex justify-content-center align-items-center ">
-                        <div className="primary-button" onClick={showModal}>
+                        <div className="primary-button" onClick={()=>showModal('add')}>
                             <Plus className="mr-5" />
                             ADD NEW TERMINAL
                         </div>
@@ -284,7 +443,7 @@ const onCreateTerminal = (e) =>{
                             <NoResultFound />
                             :
                             terminalList.map((terminal, i)=>{
-                                const{terminalId, terminalName, assignedTo, terminalAmount, status, issuedDate} = terminal;
+                                const{terminalId, actualTerminalName, assignedTo, terminalAmount, status, issuedDate} = terminal;
                                 const statusClass = () =>{
                                     if(status){
                                         if(status.toLowerCase() === 'activated'){
@@ -305,16 +464,25 @@ const onCreateTerminal = (e) =>{
                                 return(
                                     <tr key={i}>
                                     <td>{terminalId}</td>
-                                    <td>{terminalName}</td>
+                                    <td>{actualTerminalName}</td>
                                     <td>{terminalAmount}</td>
                                     <td>{assignedTo}</td>
                                     <td><span className={`${statusClass()}`}>{status}</span></td>
                                     <td>{issuedDate ? moment(new Date(issuedDate)).format('D/MM/YYYY') : 'N/A'}</td>
                                     <td>
-                                        <span className="actionBlue"><AiFillEye size={20} color="#064A72" /></span>
-                                        <span className="action-lightBlue ml-10"><Setting size={20} color="#064A72" /> Edit</span>
-                                        <span className="actionDanger ml-10"><Cancel size={20} color="#FF4400"/> Deactivate</span>
-                                        <MdDelete  className="ml-10" size={20} color="#FF4400" />
+                                        {/* <span className="actionBlue"><AiFillEye size={20} color="#064A72" /></span> */}
+                                        <span className="action-lightBlue ml-10" onClick={()=>showModal('edit', terminal)}><Setting size={20} color="#064A72" /> Edit</span>
+                                        {
+                                            status?
+                                            status.toLowerCase() === 'activated' ?
+                                             <span className="actionDanger ml-10" onClick={()=>onActivateTerminal(terminalId, status)}><Cancel size={20} color="#FF4400"/> Deactivate</span>
+                                             :
+                                             <span className="actionSuccess ml-10" onClick={()=>onActivateTerminal(terminalId, status)}><Check size={20} color="#FF4400"/> Activate</span>
+                                             :
+                                             null
+
+                                        }
+                                        {/* <MdDelete  className="ml-10" size={20} color="#FF4400" /> */}
                                     </td>
                                 </tr>
                                 )

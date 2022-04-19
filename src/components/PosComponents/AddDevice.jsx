@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { PosDeviceContext } from './PosDevice'
 
 const AddDevice = () => {
-    const {onChange, state:{actualTerminalName}} = useContext(PosDeviceContext)
+    const {onChange, state:{actualTerminalName, description, numberOfPaymentTime, preferredTerminalName, terminalCost, terminalId, terminalSerialNumber, terminalType,}} = useContext(PosDeviceContext)
   return (
     <form>
 
@@ -13,6 +13,7 @@ const AddDevice = () => {
                 className="input" 
                 type="text" 
                 name="terminalId"
+                value={terminalId}
                 required
                 placeholder="Enter terminal device ID"
                 onChange={onChange}
@@ -27,6 +28,7 @@ const AddDevice = () => {
                 className="input" 
                 type="text" 
                 name="terminalSerialNumber"
+                value={terminalSerialNumber}
                 required
                 placeholder="Enter terminal device ID"
                 onChange={onChange}
@@ -41,6 +43,7 @@ const AddDevice = () => {
                 className="input" 
                 type="text" 
                 name="terminalCost"
+                value={terminalCost}
                 required
                 onChange={onChange}
             />
@@ -54,6 +57,7 @@ const AddDevice = () => {
                 className="input" 
                 type="text" 
                 name="numberOfPaymentTime"
+                value={numberOfPaymentTime}
                 required
                 onChange={onChange}
             />
@@ -71,7 +75,7 @@ const AddDevice = () => {
                 onChange={onChange}
 
             >
-                <option value="">Select terminal type</option>
+                <option value="">{ terminalType ? terminalType: 'Select terminal type'}</option>
                 <option value="NEXGO">NEXGO</option>
                 <option value="PAX">PAX</option>
                 <option value="TOPWISE">TOPWISE</option>
@@ -105,6 +109,7 @@ const AddDevice = () => {
                 name="preferredTerminalName"
                 required
                 placeholder="Enter prefered terminal name [Optional]"
+                value={preferredTerminalName}
                 onChange={onChange}
             />
         </div>
@@ -117,6 +122,7 @@ const AddDevice = () => {
                 className="input textarea" 
                 type="text-area" 
                 name="description"
+                value={description}
                 required
                 placeholder="Give a brief description of what is obtainable using this terminal POS"
                 onChange={onChange}
