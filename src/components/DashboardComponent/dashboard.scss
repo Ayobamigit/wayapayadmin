@@ -1,0 +1,50 @@
+.count-card{
+    background: #FFFFFF;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    padding: 10px 8px;
+}
+
+.transaction-count{
+    background-color: var(--primaryColor);
+    margin: -0px -28px 0px -31px;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+    font-family: var(--primaryFont);
+    padding: 19px 26px;
+    // font-weight: 600;
+}
+
+.bar{
+    background: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    // padding: 10px 20px;
+}
+
+.bar-pie{
+    background: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    padding: 30px 20px;
+}
+
+.pie{
+    background: #FFFFFF;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+    padding: 40px;
+}
+
+.settlement-card{
+    background-color: var(--primaryColor);
+    padding: 13px 16px;
+    border: 1px solid rgba(221, 215, 215, 0.32);
+    box-sizing: border-box;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
