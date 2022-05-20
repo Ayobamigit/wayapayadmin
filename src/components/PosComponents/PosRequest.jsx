@@ -3,15 +3,18 @@ import { Row, Col, Table, Container } from 'react-bootstrap'
 import {FiSearch} from 'react-icons/fi'
 import {IoFilterOutline} from 'react-icons/io5'
 import {BiLinkExternal} from 'react-icons/bi'
+import {MdCheckCircle, MdCancel} from 'react-icons/md'
 import {ReactComponent as Pos} from '../../assets/icons/pos-white.svg' 
 import {ReactComponent as More} from '../../assets/icons/more.svg' 
 import {useNavigate } from 'react-router'
 import TerminalCards from '../Cards/TerminalCards'
-import { viewAllTerminalRequests } from '../../plugins/urls'
+import { updateTerminalRequests, viewAllTerminalRequests } from '../../plugins/urls'
 import axios from '../../plugins/axios'
 import { toast, Slide } from "react-toastify";
 import NoResultFound from '../NoResultFound/NoResultFound'
 import moment from 'moment'
+import Swal from '../Swal/swal'
+
 
 const PosRequest = () => {
     const navigate = useNavigate()
@@ -65,6 +68,96 @@ const PosRequest = () => {
             autoClose: 3000,
           });
     })
+    }
+
+    const onUpdateRequest = (id, status) =>{
+        let reqBody = {
+            requestId: id,
+            requestStatus: status
+        }
+        if(status){
+            if(status.toLowerCase()=== 'approved'){
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Are you sure you want to approve this terminal request!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes' 
+                })
+                .then(remove=>{
+                    if(remove.isConfirmed){
+                        axios({
+                            method: 'post',
+                            url: `${updateTerminalRequests}`,
+                            data: reqBody
+                        }).then(res=>{
+                            if(res.data.respCode === 0){
+                                // setState(state=>({
+                                //     ...state,
+                                //     submit: false,
+                                //     add: false
+                                // }))
+                
+                                toast.success(`Terminal request approved!`, {
+                                    transition: Slide,
+                                    hideProgressBar: true,
+                                    autoClose: 3000,
+                                });
+                                getTerminals()
+                            }
+                        })
+                        .catch(err=>{
+                            toast.error(`${err.response.data.message}`, {
+                                transition: Slide,
+                                hideProgressBar: true,
+                                autoClose: 3000,
+                            });
+                        })
+                    }
+                })
+            }
+            else if(status.toLowerCase()=== 'reject'){
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Are you sure you want to reject this terminal request!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes' 
+                })
+                .then(remove=>{
+                    if(remove.isConfirmed){
+                        let reqBody={
+                            terminalId: id,
+                            status:'ACTIVATED'
+                        }
+                        axios({
+                            method: 'post',
+                            url: `${updateTerminalRequests}`,
+                            data: reqBody
+                        }).then(res=>{
+                            if(res.data.respCode === 0){
+                                toast.success(`Terminal request rejected!`, {
+                                    transition: Slide,
+                                    hideProgressBar: true,
+                                    autoClose: 3000,
+                                });
+                                getTerminals()
+                            }
+                        })
+                        .catch(err=>{
+                            toast.error(`${err.response.data.message}`, {
+                                transition: Slide,
+                                hideProgressBar: true,
+                                autoClose: 3000,
+                            });
+                        })
+                    }
+                }) 
+            }
+        }
+        
+    
+        
     }
     return (
       <>
@@ -147,7 +240,7 @@ const PosRequest = () => {
                             <NoResultFound />
                             :
                             terminalList.map((terminal, i)=>{
-                                const{userID, requestedBy, subTotal, partPaymentAmount, status, dateCreated} = terminal;
+                                const{userID, requestedBy, subTotal, partPaymentAmount, status, dateCreated, id} = terminal;
                                 const statusClass = () =>{
                                     if(status){
                                         if(status.toLowerCase() === 'successful'){
@@ -176,7 +269,7 @@ const PosRequest = () => {
                                     <td>{partPaymentAmount}</td>
                                     <td><span className={`${statusClass()}`}>{status}</span></td>
                                     <td>{dateCreated ? moment(new Date(dateCreated)).format('D/MM/YYYY') : 'N/A'}</td>
-                                    <td><span><More /></span></td>
+                                    <td><span onClick={()=>{onUpdateRequest(id, 'APPROVED')}}><MdCheckCircle size={25} style={{color:'#05B862'}} /> </span> <span  onClick={()=>{onUpdateRequest(id, 'REJECT')}}><MdCancel size={25} style={{color: '#ff4400'}} /></span></td>
                                 </tr>
                                 )
                             })

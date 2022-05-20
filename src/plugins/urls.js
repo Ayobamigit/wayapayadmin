@@ -54,6 +54,8 @@ export const issueterminal = `${baseUrl().terminal}/terminals/issuerterminal`;
 
 export const viewAllTerminalRequests = `${baseUrl().terminal}/terminals/viewallrequestterminals`;
 
+export const updateTerminalRequests = `${baseUrl().terminal}/terminals/updateterminalrequest`;
+
 export const viewAllTerminals = `${baseUrl().terminal}/terminals/viewallterminaladmin`;
 
 export const activateTerminal = `${baseUrl().terminal}/terminals/activateterminal`;
