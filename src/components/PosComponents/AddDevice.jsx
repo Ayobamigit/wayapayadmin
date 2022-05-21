@@ -2,9 +2,41 @@ import React, { useContext } from 'react'
 import { PosDeviceContext } from './PosDevice'
 
 const AddDevice = () => {
-    const {onChange, state:{actualTerminalName, description, numberOfPaymentTime, preferredTerminalName, terminalCost, terminalId, terminalSerialNumber, terminalType,}} = useContext(PosDeviceContext)
+    const {onChange, state:{users, actualTerminalName, description, numberOfPaymentTime, preferredTerminalName, terminalCost, terminalId, terminalSerialNumber, terminalType,modalValue}} = useContext(PosDeviceContext)
   return (
     <form>
+    {
+        modalValue === 'issue' ?
+            <div className="input-div">
+                <label className="text-darker fs-14">Select User <span style={{ color: "red" }}>*</span></label>
+                <div className="input-container">
+                    <select 
+                        className="input select" 
+                        type="text" 
+                        name="userID"
+                        required
+                        onChange={onChange}
+                    >
+                        <option>Select User</option>
+                        {
+                            users ? 
+                            users.map((user, i)=>{
+                                return  <option
+                                    value={user.userId}
+                                    key={i}
+                                >
+                                    {user.firstName +' ' + user.surname}
+                                </option>
+                            })
+                            :
+                            null
+                        }
+                    </select>
+                </div>
+            </div>
+            :
+            null
+    }
 
     <div className="input-div">
         <label className="text-darker fs-14">Terminal ID <span style={{ color: "red" }}>*</span></label>
@@ -49,8 +81,10 @@ const AddDevice = () => {
             />
         </div>
     </div>
-
-    <div className="input-div">
+    {
+        modalValue === 'issue' ?
+        null:
+        <div className="input-div">
         <label className="text-darker fs-14">Number of Payment Time</label>
         <div className="input-container">
             <input 
@@ -62,7 +96,9 @@ const AddDevice = () => {
                 onChange={onChange}
             />
         </div>
-    </div>
+        </div>
+    }
+    
 
     <div className="input-div">
         <label className="text-darker fs-14">Terminal Type</label>
@@ -115,20 +151,25 @@ const AddDevice = () => {
         </div>
     </div>
 
-    <div className="input-div">
-        <label className="text-darker fs-14">Description</label>
-        <div className="input-container">
-            <textarea 
-                className="input textarea" 
-                type="text-area" 
-                name="description"
-                value={description}
-                required
-                placeholder="Give a brief description of what is obtainable using this terminal POS"
-                onChange={onChange}
-            ></textarea>
+    {
+        modalValue === 'issue' ?
+        null:
+    
+        <div className="input-div">
+            <label className="text-darker fs-14">Description</label>
+            <div className="input-container">
+                <textarea 
+                    className="input textarea" 
+                    type="text-area" 
+                    name="description"
+                    value={description}
+                    required
+                    placeholder="Give a brief description of what is obtainable using this terminal POS"
+                    onChange={onChange}
+                ></textarea>
+            </div>
         </div>
-    </div>
+    }
     </form>
   )
 }

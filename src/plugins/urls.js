@@ -40,7 +40,7 @@ export const resend = `${baseUrl().auth}/auth/resend-otp/signup/`;
 export const businessTypesList = `${baseUrl().auth}/business/type/find/all`;
 
 //User service
-export const allUsers = `${baseUrl().auth}/admin/users/corporate`;
+export const allUsers = `${baseUrl().auth}/admin/users/corporate-profile`;
 
 
 //Terminal Services
