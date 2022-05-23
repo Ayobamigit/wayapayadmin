@@ -50,7 +50,7 @@ export const createterminal = `${baseUrl().terminal}/terminals/createterminal`;
 
 export const updateterminal = `${baseUrl().terminal}/terminals/updateterminal`;
 
-export const issueterminal = `${baseUrl().terminal}/terminals/issuerterminal`;
+export const issueterminal = `${baseUrl().terminal}/terminals/issueterminal`;
 
 export const viewAllTerminalRequests = `${baseUrl().terminal}/terminals/viewallrequestterminals`;
 
