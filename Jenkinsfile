@@ -63,7 +63,7 @@ pipeline {
                 NAMESPACE = 'staging'
             }
             when {
-                branch 'wayapay-pos-dashboard-ext'
+                branch 'new-dev'
             }
             steps {
                 script {
