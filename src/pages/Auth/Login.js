@@ -55,6 +55,7 @@ const Login = () => {
                     token,
                     user                      
                 }))
+                localStorage.setItem('reloadCount',0)
                 navigate('/dashboard')
             }else{
                 toast.error(`${res.data.message}`, {
