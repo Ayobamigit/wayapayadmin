@@ -7,8 +7,9 @@ pipeline {
         AWS_DEFAULT_REGION = credentials('AWS_DEFAULT_REGION')
         CLUSTER_NAME = credentials('CLUSTER_NAME')
         REGISTRY = credentials('REGISTRY')
-        SERVICE_NAME = 'wayapay-pos-dashboard'
+        SERVICE_NAME = 'wayapay-pos-dashboard-ext'
         VERSION = sh (script: 'git rev-parse HEAD', returnStdout: true).trim().take(10)
+	NAMESPACE = "${env.GIT_BRANCH == 'production' ? 'production' : 'staging' }"
     }
 
     stages {
@@ -62,7 +63,7 @@ pipeline {
                 NAMESPACE = 'staging'
             }
             when {
-                branch 'staging'
+                branch 'new-dev'
             }
             steps {
                 script {
