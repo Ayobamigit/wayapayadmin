@@ -52,7 +52,7 @@ const SideBar = (props) => {
                             </li>
 
                             <li className="submenu">
-                                <NavLink to="/" activeClassName="selected">
+                                <NavLink to="/corporate-users" activeClassName="selected">
                                     Manage Corporate Users
                                 </NavLink>
                             </li>
@@ -75,7 +75,7 @@ const SideBar = (props) => {
 
             <ul className={props.title === 'Manage KYC' ? 'Navigation-active' : 'Navigation'}>
                 <li>
-                    <Settings className={props.title === 'Manage KYC' ? 'activeIcon' : 'sideIcon'} size={20} /><NavLink to ="/kyc">Manage KYC</NavLink>
+                    <Settings className={props.title === 'Manage KYC' ? 'activeIcon' : 'sideIcon'} size={20} /><NavLink to ="/manage-kyc">Manage KYC</NavLink>
                 </li>
             </ul>
             <ul className={props.title === 'Manage POS' ? 'Navigation-active' : 'Navigation'}>
@@ -131,27 +131,27 @@ const SideBar = (props) => {
 
                     <ul className="collapse list-unstyled nav-link" id="techSubmenu">
 
-                            <li className="submenu">
+                            {/* <li className="submenu">
                                 <NavLink to="/" activeClassName="selected">
                                     Tech Admin Vendors
                                 </NavLink>
-                            </li>
+                            </li> */}
 
                             <li className="submenu">
                                 <NavLink to="/pricing" activeClassName="selected">
                                     Pricings
                                 </NavLink>
                             </li>
-                            <li className="submenu">
+                            {/* <li className="submenu">
                                 <NavLink to="/" activeClassName="selected">
                                     Commissions
                                 </NavLink>
-                            </li>
-                            <li className="submenu">
+                            </li> */}
+                            {/* <li className="submenu">
                                 <NavLink to="/" activeClassName="selected">
                                     Third Party Access
                                 </NavLink>
-                            </li>
+                            </li> */}
                             <li className="submenu">
                                 <NavLink to="/routing" activeClassName="selected">
                                     Routing

@@ -454,6 +454,19 @@ tr:hover{
   font-family: var(--primaryFont);
 }
 
+.tabblack{
+  font-size: 12px;
+  font-weight: 500;
+  padding: 2px 10px;
+  text-align: center;
+  color: #000000;
+  background: transparent;
+  border: 1px solid #000000;
+  box-sizing: border-box;
+  border-radius: 2px;
+  font-family: var(--primaryFont);
+}
+
 .tabpending{
   font-size: 12px;
   font-weight: 500;

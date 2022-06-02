@@ -38,6 +38,9 @@ export const resend = `${baseUrl().auth}/auth/resend-otp/signup/`;
 
 //business types 
 export const businessTypesList = `${baseUrl().auth}/business/type/find/all`;
+export const createBusinessType = `${baseUrl().auth}/business/type/create`;
+export const updateBusinessType = `${baseUrl().auth}/business/type/edit`;
+export const deleteBusinessType = `${baseUrl().auth}/business/type/delete`;
 
 //User service
 export const allUsers = `${baseUrl().auth}/admin/users/corporate-profile`;
@@ -112,3 +115,4 @@ export const allScheme = `${baseUrl().tech}/scheme/viewAllSchemes`;
 export const createScheme = `${baseUrl().tech}/scheme/create`;
 export const updateScheme = `${baseUrl().tech}/scheme/update`;
 export const deleteScheme = `${baseUrl().tech}/scheme/delete`;
+

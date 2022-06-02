@@ -13,6 +13,8 @@ import Routing from './pages/Tech/Routing';
 import Pricing from './pages/Tech/Pricing';
 import Stations from './pages/Tech/Stations';
 import Scheme from './pages/Tech/Scheme';
+import Corporate from './pages/Users/Corporate';
+import Kyc from './pages/KYC/Kyc';
 
 const PrivateRoute = ({ children}) => {
   // console.log(JSON.parse(localStorage.getItem('userDetails')))
@@ -36,8 +38,15 @@ function App() {
 
     <Route path='/dashboard' exact element={ <PrivateRoute><Dashboard /> </PrivateRoute> } />
 
+    {/* Corporate */}
+
+    <Route path='/corporate-users' exact element={ <PrivateRoute><Corporate /> </PrivateRoute> } />
+
     {/* Manage Pos */}
-      <Route path='/manage-pos' exact element={<PrivateRoute><Terminals /></PrivateRoute>} />
+    <Route path='/manage-pos' exact element={<PrivateRoute><Terminals /></PrivateRoute>} />
+
+    {/* Manage Kyc */}
+    <Route path='/manage-kyc' exact element={<PrivateRoute><Kyc /></PrivateRoute>} />
 
     {/* Transactions */}
 
