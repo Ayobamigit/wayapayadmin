@@ -39,17 +39,17 @@ const SideBar = (props) => {
                 </li>
             </ul>
 
-            <ul className={props.title === 'Users' ? 'Navigation-active' : 'Navigation'}>
+            <ul className={props.title === 'Corporate' || props.title === 'Referals' ? 'Navigation-active' : 'Navigation'}>
                 <li className="dropdown" href="#userSubmenu" data-toggle="collapse" >
-                    <User className={props.title === 'Users' ? 'activeIcon' : 'sideIcon'} size={20} /><NavLink to ="#">Users</NavLink>
+                    <User className={props.title === 'Users' || props.title === 'Referals'  ? 'activeIcon' : 'sideIcon'} size={20} /><NavLink to ="#">Users</NavLink>
 
                     <ul className="collapse list-unstyled nav-link" id="userSubmenu">
 
-                            <li className="submenu">
+                            {/* <li className="submenu">
                                 <NavLink to="/" activeClassName="selected">
                                     Manage Admin Users
                                 </NavLink>
-                            </li>
+                            </li> */}
 
                             <li className="submenu">
                                 <NavLink to="/corporate-users" activeClassName="selected">
@@ -57,7 +57,7 @@ const SideBar = (props) => {
                                 </NavLink>
                             </li>
                             <li className="submenu">
-                                <NavLink to="/" activeClassName="selected">
+                                <NavLink to="/referals" activeClassName="selected">
                                     Manage Referals
                                 </NavLink>
                             </li>

@@ -45,6 +45,14 @@ export const deleteBusinessType = `${baseUrl().auth}/business/type/delete`;
 //User service
 export const allUsers = `${baseUrl().auth}/admin/users/corporate-profile`;
 
+//Corporate Users
+export const activeCorporate = `${baseUrl().auth}/dashboard/active-cooperate-users`;
+export const registeredCorporate = `${baseUrl().auth}/dashboard/total-registered-cooperate-users`;
+export const inactiveCorporate = `${baseUrl().auth}/dashboard/in-active-cooperate-users`;
+
+//Referals
+export const allReferrals = `${baseUrl().auth}/referral/get-referral-code-list`;
+
 
 //Terminal Services
 export const requestTerminal = `${baseUrl().terminal}/terminals/request`;
@@ -115,4 +123,5 @@ export const allScheme = `${baseUrl().tech}/scheme/viewAllSchemes`;
 export const createScheme = `${baseUrl().tech}/scheme/create`;
 export const updateScheme = `${baseUrl().tech}/scheme/update`;
 export const deleteScheme = `${baseUrl().tech}/scheme/delete`;
+
 
