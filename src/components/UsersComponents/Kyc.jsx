@@ -158,7 +158,7 @@ const Kyc = () => {
                             <NoResultFound />
                             :
                             corporateList.map((business, i)=>{
-                                const{otherDetails:{organisationEmail,businessType, organisationName, organisationPhone}} = business;
+                                const{otherDetails:{organisationEmail,businessType, organisationName, organisationPhone}, userId} = business;
                                 return(
                                     <tr key={i}>
                                     <td>{organisationName}</td>
@@ -166,7 +166,7 @@ const Kyc = () => {
                                     <td>{organisationEmail}</td>
                                     <td>{businessType}</td>
                                     <td>
-                                        <span className="actionDanger" onClick={()=>navigate('/')}><Setting/> Manage User’s Tier Levels</span>
+                                        <span className="actionDanger" onClick={()=>navigate(`/corporate-users/${userId}`)}><Setting/> Manage User’s Tier Levels</span>
                                     </td>
                                 </tr>
                                 )

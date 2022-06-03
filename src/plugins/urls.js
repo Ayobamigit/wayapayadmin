@@ -5,6 +5,7 @@ const baseUrl = () => {
         transactions: process.env.REACT_APP_BASE_URL_TRANSACTION,
         dispute: process.env.REACT_APP_BASE_URL_DISPUTE,
         tech: process.env.REACT_APP_BASE_URL_TECH,
+        kyc: process.env.REACT_APP_BASE_URL_KYC,
 
     }
 }
@@ -123,5 +124,12 @@ export const allScheme = `${baseUrl().tech}/scheme/viewAllSchemes`;
 export const createScheme = `${baseUrl().tech}/scheme/create`;
 export const updateScheme = `${baseUrl().tech}/scheme/update`;
 export const deleteScheme = `${baseUrl().tech}/scheme/delete`;
+
+
+//KYC Services
+export const kycStatus = `${baseUrl().kyc}/kyc/fetch-status`;
+// export const createScheme = `${baseUrl().tech}/scheme/create`;
+// export const updateScheme = `${baseUrl().tech}/scheme/update`;
+// export const deleteScheme = `${baseUrl().tech}/scheme/delete`;
 
 

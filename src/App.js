@@ -16,6 +16,7 @@ import Scheme from './pages/Tech/Scheme';
 import Corporate from './pages/Users/Corporate';
 import Kyc from './pages/KYC/Kyc';
 import Referals from './components/UsersComponents/Referals';
+import TierLevel from './pages/Users/TierLevel';
 
 const PrivateRoute = ({ children}) => {
   // console.log(JSON.parse(localStorage.getItem('userDetails')))
@@ -42,6 +43,7 @@ function App() {
     {/* Corporate */}
 
     <Route path='/corporate-users' exact element={ <PrivateRoute><Corporate /> </PrivateRoute> } />
+    <Route path='/corporate-users/:id' exact element={ <PrivateRoute><TierLevel /> </PrivateRoute> } />
     <Route path='/referals' exact element={ <PrivateRoute><Referals /> </PrivateRoute> } />
 
     {/* Manage Pos */}

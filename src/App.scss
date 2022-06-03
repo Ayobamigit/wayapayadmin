@@ -141,6 +141,9 @@ body{
   margin-top: 40px !important;
 }
 
+.mb-0{
+  margin-bottom: 0 !important;
+}
 .mb-10{
   margin-bottom: 10px !important;
 }
@@ -167,6 +170,14 @@ body{
 
 .mr-30{
   margin-right: 30px;
+}
+
+.p-30{
+  padding: 30px;
+}
+
+.p-20{
+  padding: 20px;
 }
 
 .text-white{
@@ -439,6 +450,20 @@ tr:hover{
   box-sizing: border-box;
   border-radius: 3px;
   font-family: var(--primaryFont);
+}
+
+.tabkyc{
+  font-size: 12px;
+  font-weight: 500;
+  padding: 7px 8px;
+  text-align: center;
+  color: #000000;
+  box-sizing: border-box;
+  font-family: var(--primaryFont);
+  background: #F8F8F8;
+  border: 1px solid #E0E0E0;
+  box-shadow: 0px 0px 0px #E5E5E5;
+  border-radius: 4px;
 }
 
 .tabdamaged{
@@ -758,4 +783,25 @@ button[disabled]{
   text-align: center;
   margin-top: 25px;
   margin-bottom: 25px;
+}
+
+.tier{
+  background: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  box-shadow: 0px 0px 0px #E5E5E5;
+  border-radius: 4px;
+}
+
+.kyc-table{
+  background: #FFFFFF;
+  box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.1);
+}
+
+.kyc-action{
+  background: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  box-shadow: 0px 0px 0px #E5E5E5;
+  border-radius: 2px;
+  padding: 7px 15px;
+  font-family: var(--primaryFont);
 }
