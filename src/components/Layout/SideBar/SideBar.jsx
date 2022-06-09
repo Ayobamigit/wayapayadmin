@@ -45,11 +45,11 @@ const SideBar = (props) => {
 
                     <ul className="collapse list-unstyled nav-link" id="userSubmenu">
 
-                            {/* <li className="submenu">
-                                <NavLink to="/" activeClassName="selected">
+                            <li className="submenu">
+                                <NavLink to="/admin-users" activeClassName="selected">
                                     Manage Admin Users
                                 </NavLink>
-                            </li> */}
+                            </li>
 
                             <li className="submenu">
                                 <NavLink to="/corporate-users" activeClassName="selected">

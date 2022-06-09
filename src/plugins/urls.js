@@ -45,6 +45,7 @@ export const deleteBusinessType = `${baseUrl().auth}/business/type/delete`;
 
 //User service
 export const allUsers = `${baseUrl().auth}/admin/users/corporate-profile`;
+export const allAdminUsers = `${baseUrl().auth}/user/admin-users`;
 
 //Corporate Users
 export const activeCorporate = `${baseUrl().auth}/dashboard/active-cooperate-users`;
