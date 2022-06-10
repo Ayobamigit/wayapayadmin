@@ -4,7 +4,7 @@ import Modal from '../../components/Modal/Modal'
 import AddAdmin from '../../components/UsersComponents/AddAdmin'
 import axios from '../../plugins/axios';
 import NoResultFound from '../../components/NoResultFound/NoResultFound'
-import { allAdminUsers} from '../../plugins/urls'
+import { allAdminUsers, createAdminUser, deleteUser} from '../../plugins/urls'
 import { toast, Slide } from "react-toastify"
 import { Row, Col, Table, Container } from 'react-bootstrap'
 import {ReactComponent as Plus} from '../../assets/icons/plus.svg' 
@@ -12,16 +12,25 @@ import {MdDelete} from 'react-icons/md'
 import {FiSearch} from 'react-icons/fi'
 import {IoFilterOutline} from 'react-icons/io5' 
 import TerminalCards from '../../components/Cards/TerminalCards'
-
+import Swal from '../../components/Swal/swal';
 
 
 
 const AdminUsers = () => {
     const [state, setState] = useState({
         adminUsers:[],
+        admin: true,
+        firstName:'',
+        surname:'',
+        email:'',
+        gender:'',
+        referenceCode:'',
         submit: false,
         add: false
     })
+
+    const {adminUsers, add, submit, admin, firstName, surname, email, referenceCode,gender} = state
+
 
     const showModal = ()=>{
         if(!add){
@@ -69,13 +78,92 @@ const AdminUsers = () => {
 
     const onCreateAdmin = (e)=>{
         e.preventDefault();
+        setState(state=>({
+            ...state,
+            submit: true
+        }))
+
+        let reqBody = {
+            admin,
+            firstName,
+            surname,
+            email,
+            referenceCode,
+            gender,
+            password: Math.random().toString(36).slice(2)
+        }
+
+        axios({
+            method: 'post',
+            url:`${createAdminUser}`,
+            data: reqBody
+        }).then(res=>{
+            if (res.data.status){
+                setState(state=>({
+                    ...state,
+                    submit: false,
+                    add: false,
+                    firstName:'',
+                    surname:'',
+                    email:'',
+                    referenceCode:'',
+                    gender:'',
+                }))
+                toast.success(
+                    `${res.data.data}`,
+                     { transition: Slide, hideProgressBar: true, autoClose: 3000 } 
+                )
+                getUsers()
+            }else{
+                toast.error(
+                    `An error occured while creating user`,
+                     { transition: Slide, hideProgressBar: true, autoClose: 3000 } 
+                )
+            }
+        }).catch(err=>{
+            toast.error(`${err.response.data.message}`, {
+                transition: Slide,
+                hideProgressBar: true,
+                autoClose: 3000,
+              });
+        })
+
+        
     }
 
-    const onDeleteAdmin = () =>{
-
+    const onDeleteAdmin = (id) =>{
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Are you sure you want to delete this user!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes' 
+        })
+        .then(remove=>{
+            if(remove.isConfirmed){
+                axios({
+                    method: 'delete',
+                    url:`${deleteUser}/${id}`,
+                }).then(res=>{
+                    if(res.data.status){
+                        toast.success(
+                            `User Deleted successfully`,
+                            { transition: Slide, hideProgressBar: true, autoClose: 3000 } 
+                        )
+                        getUsers()
+                    }
+                }).catch(err=>{
+                    toast.error(`${err.response.data.message}`, {
+                        transition: Slide,
+                        hideProgressBar: true,
+                        autoClose: 3000,
+                    });
+                })
+            }
+        })
+                
     }
 
-    const {adminUsers, add, submit} = state
   return (
     <Layout title="Admin Users">
         <Modal
@@ -88,6 +176,11 @@ const AdminUsers = () => {
         >
             <AddAdmin
                 onChange={onChange}
+                firstName={firstName}
+                surname={surname}
+                email={email}
+                gender={gender}
+                referenceCode={referenceCode}
             />
         </Modal>
         <div>
