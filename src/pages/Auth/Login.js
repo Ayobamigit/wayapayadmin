@@ -50,13 +50,21 @@ const Login = () => {
             if(res.data.status === true){
                 
                 const {token, user} = res.data.data;
+                if(!user.isAdmin){
+                    localStorage.setItem('userDetails', JSON.stringify({
+                        token,
+                        user                      
+                    }))
+                    localStorage.setItem('reloadCount',0)
+                    navigate('/dashboard')
+                }else{
+                    toast.error(`You are not permitted to access this platform`, {
+                        transition: Slide,
+                        hideProgressBar: true,
+                        autoClose: 3000,
+                      });  
+                }
 
-                localStorage.setItem('userDetails', JSON.stringify({
-                    token,
-                    user                      
-                }))
-                localStorage.setItem('reloadCount',0)
-                navigate('/dashboard')
             }else{
                 toast.error(`${res.data.message}`, {
                     transition: Slide,

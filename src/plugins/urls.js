@@ -1,6 +1,7 @@
 const baseUrl = () => {
     return {
         auth: process.env.REACT_APP_BASE_URL_AUTH,
+        agency: process.env.REACT_APP_BASE_URL_AGENCY,
         terminal: process.env.REACT_APP_BASE_URL_TERMINAL,
         transactions: process.env.REACT_APP_BASE_URL_TRANSACTION,
         dispute: process.env.REACT_APP_BASE_URL_DISPUTE,
@@ -50,6 +51,7 @@ export const createAdminUser = `${baseUrl().auth}/auth/create`;
 export const deleteUser = `${baseUrl().auth}/user/delete`;
 
 //Corporate Users
+export const allMerchants = `${baseUrl().agency}/agent/getallmerchants`;
 export const activeCorporate = `${baseUrl().auth}/dashboard/active-cooperate-users`;
 export const registeredCorporate = `${baseUrl().auth}/dashboard/total-registered-cooperate-users`;
 export const inactiveCorporate = `${baseUrl().auth}/dashboard/in-active-cooperate-users`;
@@ -69,6 +71,8 @@ export const issueterminal = `${baseUrl().terminal}/terminals/issueterminal`;
 
 export const viewAllTerminalRequests = `${baseUrl().terminal}/terminals/viewallrequestterminals`;
 
+export const viewTerminalStats = `${baseUrl().terminal}/terminals/terminalRequestStats`;
+
 export const updateTerminalRequests = `${baseUrl().terminal}/terminals/updateterminalrequest`;
 
 export const viewAllTerminals = `${baseUrl().terminal}/terminals/viewallterminaladmin`;
@@ -82,7 +86,7 @@ export const allTransactions = `${baseUrl().transactions}/transactions/viewalltr
 
 export const viewTransaction = `${baseUrl().transactions}/transactions/viewonetransactionsbyuser`;
 
-export const transactionStats = `${baseUrl().transactions}/transactions/transactioncount`;
+export const transactionStats = `${baseUrl().transactions}/transactions/adminTransactionCount`;
 
 export const revenueStats = `${baseUrl().dispute}/api/v1/settlement/getTransactionStats`;
 
@@ -131,8 +135,23 @@ export const deleteScheme = `${baseUrl().tech}/scheme/delete`;
 
 //KYC Services
 export const kycStatus = `${baseUrl().kyc}/kyc/fetch-status`;
-// export const createScheme = `${baseUrl().tech}/scheme/create`;
-// export const updateScheme = `${baseUrl().tech}/scheme/update`;
-// export const deleteScheme = `${baseUrl().tech}/scheme/delete`;
+
+//KYC-National ID
+export const nationIdStatus = `${baseUrl().kyc}/national/id/get/by/user`;
+
+//KYC-Utility Bill
+export const utilityStatus = `${baseUrl().kyc}/utility/bill/get/by/user`;
+
+//KYC-International Passport
+export const passportStatus = `${baseUrl().kyc}/international/passport/get/by/user`;
+
+//KYC-Passport Photograph
+export const pictureStatus = `${baseUrl().kyc}/find/by/user`;
+
+//KYC-Voters ID
+export const votersIdStatus = `${baseUrl().kyc}/user/voters/card/get/by/user`;
+
+//KYC-CAC 
+export const cacStatus = `${baseUrl().kyc}/cac/kyc/user`
 
 

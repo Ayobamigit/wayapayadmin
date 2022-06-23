@@ -15,7 +15,7 @@ import {MdDelete} from 'react-icons/md'
 import Modal from '../Modal/Modal'
 import AddDevice from './AddDevice'
 import axios from '../../plugins/axios'
-import { allUsers, activateTerminal, createterminal, updateterminal, viewAllTerminals, issueterminal } from '../../plugins/urls'
+import { activateTerminal, createterminal, updateterminal, viewAllTerminals, issueterminal, allMerchants } from '../../plugins/urls'
 import { toast, Slide } from "react-toastify";
 import NoResultFound from '../NoResultFound/NoResultFound'
 import moment from 'moment'
@@ -37,7 +37,7 @@ const PosDevice = () => {
       pageSize: 20,
       users:[],
       terminalList: [],
-      userID:'',
+      userID: null,
       actualTerminalName:'',
       description:'',
       amountLeft:'',
@@ -51,7 +51,7 @@ const PosDevice = () => {
       submit: false
   })
 
-  const {userID, terminalList, add, modalValue, actualTerminalName, amountPaid, amountLeft,  description, numberOfPaymentTime, preferredTerminalName, terminalCost, terminalId, terminalSerialNumber, terminalType, from, to, pageNo, pageSize, submit} = state;
+  const {userID, users, terminalList, add, modalValue, actualTerminalName, amountPaid, amountLeft,  description, numberOfPaymentTime, preferredTerminalName, terminalCost, terminalId, terminalSerialNumber, terminalType, from, to, pageNo, pageSize, submit} = state;
 
   const showModal = (value, terminal) =>{
     if(!add){
@@ -122,13 +122,13 @@ const getTerminals = ()=>{
 const getUsers = ()=>{
     axios({
         method: 'get',
-        url: `${allUsers}?size=1000`,
+        url: `${allMerchants}`,
     }).then(res=>{
-        console.log(res.data.users)
-        if(res.data){
+        console.log(res.data.respBody)
+        if(res.data.respCode === 0){
             setState(state=>({
                 ...state,
-                users: res.data.users
+                users: res.data.respBody
             }))
         }
     })
@@ -145,7 +145,6 @@ const onChange =(e)=>{
 
     let name = e.target.name;
     let value = e.target.value;
-
     setState(state=>({
         ...state,
        [ e.target.name]: e.target.value
@@ -155,6 +154,13 @@ const onChange =(e)=>{
         setState(state=>({
             ...state,
             actualTerminalName: value
+        }))
+    }
+
+    if(name === 'userID'){
+        setState(state=>({
+            ...state,
+            userID: users[e.target.value]
         }))
     }
 }
@@ -288,8 +294,12 @@ const onIssueTerminal = (e) =>{
         submit: true
     }))
 
+    console.log(userID)
+
     let reqBody ={
-        userID,
+        userID: userID ? userID.userId:'',
+        merchantId: userID ? userID.merchantId:'',
+        // userID: userID ? userID.userId:'',
         actualTerminalName,
         preferredTerminalName,
         amountLeft,

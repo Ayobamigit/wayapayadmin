@@ -8,7 +8,7 @@ import {ReactComponent as Pos} from '../../assets/icons/pos-white.svg'
 import {ReactComponent as More} from '../../assets/icons/more.svg' 
 import {useNavigate } from 'react-router'
 import TerminalCards from '../Cards/TerminalCards'
-import { updateTerminalRequests, viewAllTerminalRequests } from '../../plugins/urls'
+import { updateTerminalRequests, viewAllTerminalRequests, viewTerminalStats } from '../../plugins/urls'
 import axios from '../../plugins/axios'
 import { toast, Slide } from "react-toastify";
 import NoResultFound from '../NoResultFound/NoResultFound'
@@ -23,6 +23,10 @@ const PosRequest = () => {
     const [state, setState] = useState({
         from:'',
         to:'',
+        total:'',
+        approved:'',
+        pending:'',
+        rejected:'',
         pageNo:0,
         pageSize: 20,
         terminalList: []
@@ -34,6 +38,7 @@ const PosRequest = () => {
 
     useEffect(()=>{
         getTerminals()
+        getTerminalStats()
     },[])
     
     const getTerminals = ()=>{
@@ -58,6 +63,31 @@ const PosRequest = () => {
                 setState(state=>({
                     ...state,
                     terminalList: res.data.respBody.content
+                }))
+            }
+        })
+        .catch(err=>{
+        toast.error(`${err.response.data.message}`, {
+            transition: Slide,
+            hideProgressBar: true,
+            autoClose: 3000,
+          });
+    })
+    }
+
+    const getTerminalStats = ()=>{
+    
+        axios({
+            method: 'get',
+            url: `${viewTerminalStats}`,
+        }).then(res=>{
+            if(res.data.respCode === 0){
+                setState(state=>({
+                    ...state,
+                    total: res.data.respBody.totalRequest,
+                    approved: res.data.respBody.approvedRequest,
+                    pending: res.data.respBody.pendingRequest,
+                    rejected: res.data.respBody.rejectedRequest,
                 }))
             }
         })
@@ -206,13 +236,16 @@ const PosRequest = () => {
           <Container fluid>
               <Row className="mt-40 width-50">
                   <Col>
-                      <TerminalCards title="Total Terminal Request" value="3" color="text-darker fs-12" textColor="text-darker"/>
+                      <TerminalCards title="Total Terminal Request" value={state.total} color="text-darker fs-12" textColor="text-darker"/>
                   </Col>
                   <Col>
-                      <TerminalCards title="Total Issued Approved" value="3" color="text-darker fs-12" textColor="text-darker"/>
+                      <TerminalCards title="Total Issued Approved" value={state.approved} color="text-darker fs-12" textColor="text-darker"/>
                   </Col>
                   <Col>
-                      <TerminalCards title="Total Pending Rejected" value="1" color="text-darker fs-12" textColor="text-darker"/>
+                      <TerminalCards title="Total Pending" value={state.pending} color="text-darker fs-12" textColor="text-darker"/>
+                  </Col>
+                  <Col>
+                      <TerminalCards title="Total Rejected" value={state.rejected} color="text-darker fs-12" textColor="text-darker"/>
                   </Col>
               </Row>
   
@@ -226,7 +259,7 @@ const PosRequest = () => {
                               <th>terminal Name</th>
                               <th>terminal cost</th>
                               <th>amount paid</th>
-                              <th>amount left</th>
+                              {/* <th>amount left</th> */}
                               <th>status</th>
                               <th>request date</th>
                               <th>action</th>
@@ -266,7 +299,7 @@ const PosRequest = () => {
                                     <td>NEXGO</td>
                                     <td>{subTotal}</td>
                                     <td>{partPaymentAmount}</td>
-                                    <td>{partPaymentAmount}</td>
+                                    {/* <td>{partPaymentAmount}</td> */}
                                     <td><span className={`${statusClass()}`}>{status}</span></td>
                                     <td>{dateCreated ? moment(new Date(dateCreated)).format('D/MM/YYYY') : 'N/A'}</td>
                                     <td><span onClick={()=>{onUpdateRequest(id, 'APPROVED')}}><MdCheckCircle size={25} style={{color:'#05B862'}} /> </span> <span  onClick={()=>{onUpdateRequest(id, 'REJECT')}}><MdCancel size={25} style={{color: '#ff4400'}} /></span></td>

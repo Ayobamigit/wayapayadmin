@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Row, Col, Table, Container } from 'react-bootstrap'
 import {IoFilterOutline} from 'react-icons/io5' 
 import {FiSearch} from 'react-icons/fi'
-import { activeCorporate, registeredCorporate, inactiveCorporate, allUsers } from '../../plugins/urls'
+import { activeCorporate, registeredCorporate, inactiveCorporate, allUsers, utilityStatus } from '../../plugins/urls'
 import { toast, Slide } from "react-toastify";
 import TerminalCards from '../Cards/TerminalCards'
 import axios from '../../plugins/axios';
@@ -70,6 +70,8 @@ const Kyc = () => {
                 autoClose: 3000,
               });
         })
+
+        
 
         getUsers()
     },[])

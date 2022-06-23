@@ -177,6 +177,7 @@ const WayaPos = () => {
                     <thead>
                         <tr style={{backgroundColor: '#F9843533', borderRadius: '5px'}}>
                             <th>Reference Id</th>
+                            <th>Business Name</th>
                             <th>Transaction Category</th>
                             <th>Terminal Type</th>
                             <th>Payment Method</th>
@@ -194,7 +195,7 @@ const WayaPos = () => {
                             <NoResultFound />
                             :
                             transactions.map((transaction, i)=>{
-                                const{de37, transactionCategory, terminalType, paymentMethod, de7, paymentStatus, de4, id} = transaction;
+                                const{de37, transactionCategory, terminalType, paymentMethod, de7, paymentStatus, de4, id, terminals} = transaction;
                                 const statusClass = () =>{
                                     if(paymentStatus){
                                         if(paymentStatus.toLowerCase() === 'successful'){
@@ -212,13 +213,23 @@ const WayaPos = () => {
                                     }
                                 }
 
+                                const getAmount = () =>{
+                                    let amount = 0.00
+                                    if(de4){
+                                        let res = parseFloat(de4);
+                                        amount = res/100
+                                    }
+                                    return amount;
+                                }
+
                                 return(
                                     <tr key={i}>
                                     <td>{de37}</td>
+                                    <td>{terminals ? terminals.merchants ? terminals.merchants.orgName : 'Business Name' : 'Business Name'}</td>
                                     <td>{transactionCategory}</td>
                                     <td>{terminalType}</td>
                                     <td>{paymentMethod}</td>
-                                    <td>{de4}</td>
+                                    <td>NGN {getAmount()}</td>
                                     <td>{de7 ? moment(new Date(de7)).format('D/MM/YYYY') : 'N/A'}</td>
                                     <td><span className={`${statusClass()}`}>{paymentStatus}</span></td>
                                     <td><span className="tabtransparent" onClick={()=>{navigate(`/transaction/${id}`)}}>View More</span></td>

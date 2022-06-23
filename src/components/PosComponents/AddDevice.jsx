@@ -2,7 +2,9 @@ import React, { useContext } from 'react'
 import { PosDeviceContext } from './PosDevice'
 
 const AddDevice = () => {
-    const {onChange, state:{users, actualTerminalName, description, numberOfPaymentTime, preferredTerminalName, terminalCost, terminalId, terminalSerialNumber, terminalType,modalValue}} = useContext(PosDeviceContext)
+    const {onChange, state:{users, userID, actualTerminalName, description, numberOfPaymentTime, preferredTerminalName, terminalCost, terminalId, terminalSerialNumber, terminalType,modalValue}} = useContext(PosDeviceContext)
+
+    console.log(userID)
   return (
     <form>
     {
@@ -22,10 +24,10 @@ const AddDevice = () => {
                             users ? 
                             users.map((user, i)=>{
                                 return  <option
-                                    value={user.userId}
+                                    value={i}
                                     key={i}
                                 >
-                                    {user.firstName +' ' + user.surname}
+                                    {user.firstname +' ' + user.surname}
                                 </option>
                             })
                             :

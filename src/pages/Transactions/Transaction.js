@@ -7,10 +7,11 @@ import CardDetails from '../../components/TransactionComponents/CardDetails'
 import axios from '../../plugins/axios'
 import { viewTransaction } from '../../plugins/urls'
 import { toast, Slide } from "react-toastify"
-import { useMatch } from 'react-router';
+import { useMatch, useNavigate } from 'react-router';
 
 export const TransactionContext = createContext()
 const Transaction = () => {
+  const navigate = useNavigate()
   const match = useMatch('/transaction/:id');
   const id = match ?  match.params.id : ''
   const [state, setState] = useState({
@@ -19,9 +20,18 @@ const Transaction = () => {
     terminalType:'',
     paymentMethod:'',
     amount:'',
+    newAmount: '',
     terminalId:'',
-    paymentStatus:''
+    paymentStatus:'',
+    businessName: '',
+    authCode:'',
+    transactionLocation:'',
+    scheme:'',
+    processedBy:'',
+    cardNo:'',
+    orgName:''
   })
+
   useEffect(()=>{
 
     axios({
@@ -34,7 +44,7 @@ const Transaction = () => {
     }).then(res=>{
       // console.log(res)
       if(res.data.respCode === 0){
-        const {paymentStatus, paymentMethod, transactionCategory,terminalType, de4, de41, de37} =res.data.respBody
+        const {paymentStatus, paymentMethod, transactionCategory,terminalType, de2, de4, de41, de37, de38, transactionLocation, scheme, processedBy, terminals} =res.data.respBody
         setState(state=>({
           ...state,
           paymentStatus,
@@ -43,7 +53,13 @@ const Transaction = () => {
           terminalType,
           amount: de4,
           terminalId: de41,
-          referenceID: de37
+          referenceID: de37,
+          authCode: de38,
+          transactionLocation,
+          scheme,
+          processedBy,
+          cardNo: de2,
+          orgName: terminals ? terminals.merchants ? terminals.merchants.orgName: '':''
         }))
       }
     }).catch(err=>{
@@ -53,16 +69,15 @@ const Transaction = () => {
       autoClose: 3000,
       })
   })
-
-
   }, [])
+
   return (
     <Layout title="Transactions">
       <TransactionContext.Provider value={{
-        state
+        state,
       }}>
         <div className="font-default address">
-            <h4 className="text-darker fs-14 fw-700 cursor-pointer">
+            <h4 className="text-darker fs-14 fw-700 cursor-pointer" onClick={()=>navigate(-1)}>
                 <span className="mr-15"><Back /></span>
                 Back 
             </h4>

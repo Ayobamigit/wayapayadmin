@@ -15,10 +15,10 @@ const TransactionCard = (props) => {
                 <h4 className="fs-13 fw-700 text-orange">{failed}</h4>
                 <h4 className="fs-13 fw-400 text-semi-dark">Failed</h4>
             </div>
-            <div>
+            {/* <div>
                 <h4 className="fs-13 fw-700 text-semi-dark">{abandoned}</h4>
                 <h4 className="fs-13 fw-400 text-semi-dark">Abandoned</h4>
-            </div>
+            </div> */}
             <div>
                 <h4 className="fs-13 fw-700 text-orange">{refunded}</h4>
                 <h4 className="fs-13 fw-400 text-semi-dark">Refunded</h4>

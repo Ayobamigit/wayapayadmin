@@ -5,7 +5,7 @@ import {ReactComponent as Back} from '../../assets/icons/back.svg'
 import { useMatch, useNavigate } from 'react-router'
 import { Col, Container, Row } from 'react-bootstrap'
 import axios from '../../plugins/axios'
-import { kycStatus } from '../../plugins/urls'
+import { kycStatus, utilityStatus, nationIdStatus, passportStatus, pictureStatus, votersIdStatus, cacStatus } from '../../plugins/urls'
 import Tier2 from '../../components/UsersComponents/Tier2'
 import Tier3 from '../../components/UsersComponents/Tier3'
 import Tier4 from '../../components/UsersComponents/Tier4'
@@ -13,20 +13,114 @@ import Tier4 from '../../components/UsersComponents/Tier4'
 
 const TierLevel = () => {
     const [state, setState] = useState({
-        level: 1
+        level: 1,
+        utility: false,
+        nationStatus: false,
+        passport: false,
+        picture: false,
+        votersId: false,
+        cac: false
     })
 
-    const {tierNo, level} = state;
+    const {level} = state;
     const navigate = useNavigate()
     const match = useMatch('/corporate-users/:id');
     const id = match ?  match.params.id : ''
     useEffect(()=>{
     // console.log(id)
+    //KYC STATUS
         axios({
             method: 'get',
             url:`${kycStatus}/${id}`
         }).then(res=>{
             console.log(res)
+        })
+
+    //UTILITY STATUS
+
+        axios({
+            method: 'get',
+            url:`${utilityStatus}/${id}`
+        }).then(res=>{
+            setState(state=>({
+                ...state,
+                utility: res.data.status
+            }))
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+
+    //nation id STATUS
+
+        axios({
+            method: 'get',
+            url:`${nationIdStatus}/${id}`
+        }).then(res=>{
+            setState(state=>({
+                ...state,
+                nationStatus: res.data.status
+            }))
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+
+        //Passport status
+
+        axios({
+            method: 'get',
+            url:`${passportStatus}/${id}`
+        }).then(res=>{
+            setState(state=>({
+                ...state,
+                passport: res.data.status
+            }))
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+
+        //Picture Status
+        axios({
+            method: 'get',
+            url:`${pictureStatus}/${id}`
+        }).then(res=>{
+            setState(state=>({
+                ...state,
+                picture: res.data.status
+            }))
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+
+        //Votersid Status
+        axios({
+            method: 'get',
+            url:`${votersIdStatus}/${id}`
+        }).then(res=>{
+            setState(state=>({
+                ...state,
+                votersId: res.data.status
+            }))
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+
+        //CAC Status
+        axios({
+            method: 'get',
+            url:`${cacStatus}/${id}`
+        }).then(res=>{
+            setState(state=>({
+                ...state,
+                cac: res.data.status
+            }))
+        })
+        .catch(err=>{
+            console.log(err)
         })
     })
 

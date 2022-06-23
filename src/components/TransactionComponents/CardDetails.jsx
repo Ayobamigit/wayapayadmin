@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Col } from 'react-bootstrap'
+import { TransactionContext } from '../../pages/Transactions/Transaction'
 import Divider from '../Divider/Divider'
 import './transaction.scss'
 
 const CardDetails = () => {
+    const {state:{authCode, transactionLocation, scheme, processedBy, cardNo}} = useContext(TransactionContext)
   return (
     <Col className="card-details">
         <div className="card-padding">
@@ -14,19 +16,19 @@ const CardDetails = () => {
             <div className="d-flex justify-content-between mt-40">
                 <div>
                     <h4 className="text-darker fs-14 fw-700">Card Type</h4>
-                    <h4 className="text-darker fs-12">Mastercard</h4>
+                    <h4 className="text-darker fs-12">{scheme ? scheme : 'N/A'}</h4>
                 </div>
 
                 <div>
                     <h4 className="text-darker fs-14 fw-700">Card Number</h4>
-                    <h4 className="text-darker fs-12">408408 **** 4081</h4>
+                    <h4 className="text-darker fs-12">{cardNo ? cardNo : 'N/A'}</h4>
                 </div>
             </div>
 
             <div className="d-flex justify-content-between mt-40 mb-15">
                 <div>
                     <h4 className="text-darker fs-14 fw-700">Authorization</h4>
-                    <h4 className="text-darker fs-12">AUTH_25jm16y8sy</h4>
+                    <h4 className="text-darker fs-12">{authCode ? authCode : 'N/A'}</h4>
                 </div>
 
                 <div className="text-end">
@@ -38,12 +40,12 @@ const CardDetails = () => {
             <div className="d-flex justify-content-between mt-40 mb-15">
                 <div>
                     <h4 className="text-darker fs-14 fw-700">IP Address</h4>
-                    <h4 className="text-darker fs-12">154.73.8.97</h4>
+                    <h4 className="text-darker fs-12">{transactionLocation ? transactionLocation : 'N/A'}</h4>
                 </div>
 
                 <div className="text-end">
                     <h4 className="text-darker fs-14 fw-700">Payment Processor</h4>
-                    <h4 className="text-darker fs-12">Mastercard</h4>
+                    <h4 className="text-darker fs-12">{processedBy ? processedBy : 'N/A'}</h4>
                 </div>
             </div>
 
