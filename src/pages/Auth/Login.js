@@ -50,7 +50,7 @@ const Login = () => {
             if(res.data.status === true){
                 
                 const {token, user} = res.data.data;
-                if(!user.isAdmin){
+                if(user.isAdmin){
                     localStorage.setItem('userDetails', JSON.stringify({
                         token,
                         user                      
